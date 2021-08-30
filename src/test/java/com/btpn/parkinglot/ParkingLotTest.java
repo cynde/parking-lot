@@ -101,12 +101,27 @@ class ParkingLotTest {
         Vehicle car = new Vehicle() {};
         List<Notifiable> notifiables = new ArrayList<>();
         notifiables.add(owner);
-        notifiables.add(trafficCop      );
+        notifiables.add(trafficCop);
         ParkingLot parkingLot = new ParkingLot(notifiables, capacity);
         parkingLot.park(car);
 
         parkingLot.unpark(car);
 
         Mockito.verify(owner, Mockito.times(1)).notifyIfAvailable();
+    }
+
+    @Test
+    void addSubscriber_shouldNotThrowAlreadySubscribedException_whenSuccessfullyAddANotifiableAsASubscriber() {
+        ParkingLot parkingLot = new ParkingLot(capacity);
+
+        Assertions.assertDoesNotThrow(() -> parkingLot.addSubscriber(owner));
+    }
+
+    @Test
+    void addSubscriber_shouldThrowAlreadySubscribedException_whenSubscribeWithTheSameSubscriberTwice() {
+        ParkingLot parkingLot = new ParkingLot(capacity);
+        parkingLot.addSubscriber(owner);
+
+        Assertions.assertThrows(AlreadySubscribedException.class, () -> parkingLot.addSubscriber(owner));
     }
 }

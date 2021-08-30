@@ -18,6 +18,13 @@ public class ParkingLot {
         this.capacity = capacity;
     }
 
+    public void addSubscriber(Notifiable notifiable) {
+        if (this.notifiables.contains(notifiable)) {
+            throw new AlreadySubscribedException();
+        }
+        this.notifiables.add(notifiable);
+    }
+
     private boolean isParked(Vehicle car) {
         return this.cars.contains(car);
     }
