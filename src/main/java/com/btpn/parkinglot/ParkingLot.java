@@ -6,11 +6,18 @@ import java.util.List;
 public class ParkingLot {
     private List<Vehicle> cars = new ArrayList<>();
     private Owner owner;
+    private TrafficCop trafficCop;
     private int capacity;
 
     public ParkingLot(Owner owner, int capacity) {
         this.owner = owner;
         this.capacity = capacity;
+        this.trafficCop = () -> {};
+    }
+
+    public ParkingLot(Owner owner, TrafficCop trafficCop, int capacity) {
+        this(owner, capacity);
+        this.trafficCop = trafficCop;
     }
 
     private boolean isParked(Vehicle car) {
@@ -31,6 +38,7 @@ public class ParkingLot {
         this.cars.add(car);
         if (isFull()) {
             this.owner.notifyIfFull();
+            this.trafficCop.notifyIfFull();
         }
     }
 

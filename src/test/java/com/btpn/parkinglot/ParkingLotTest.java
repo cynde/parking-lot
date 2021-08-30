@@ -7,6 +7,7 @@ import org.mockito.Mockito;
 class ParkingLotTest {
     private int capacity = 1;
     private Owner owner = Mockito.mock(Owner.class);
+    private TrafficCop trafficCop = Mockito.mock(TrafficCop.class);
 
     @Test
     void park_shouldNotThrowException_whenSuccessfullyParkACar() {
@@ -71,5 +72,15 @@ class ParkingLotTest {
         parkingLot.unpark(car);
 
         Mockito.verify(owner, Mockito.times(1)).notifyIfAvailable();
+    }
+
+    @Test
+    void park_shouldCallNotifyIfFullFromTrafficCop_whenParkingLotIsFull() {
+        Vehicle car = new Vehicle() {};
+        ParkingLot parkingLot = new ParkingLot(owner, trafficCop, capacity);
+
+        parkingLot.park(car);
+
+        Mockito.verify(trafficCop, Mockito.times(1)).notifyIfFull();
     }
 }
