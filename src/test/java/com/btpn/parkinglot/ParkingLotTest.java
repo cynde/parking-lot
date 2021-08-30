@@ -61,4 +61,15 @@ class ParkingLotTest {
 
         Assertions.assertThrows(ParkingLotIsFullException.class, () -> parkingLot.park(truck));
     }
+
+    @Test
+    void unpark_shouldCallNotifyIfAvailableFromOwner_whenParkingLotBecomeAvailable() {
+        Vehicle car = new Vehicle() {};
+        ParkingLot parkingLot = new ParkingLot(owner, capacity);
+        parkingLot.park(car);
+
+        parkingLot.unpark(car);
+
+        Mockito.verify(owner, Mockito.times(1)).notifyIfAvailable();
+    }
 }

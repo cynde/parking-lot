@@ -38,6 +38,10 @@ public class ParkingLot {
         if (!isParked(car)) {
             throw new VehicleIsNotParkedException();
         }
+        boolean ifFull = this.isFull();
         this.cars.remove(car);
+        if (ifFull) {
+            this.owner.notifyIfAvailable();
+        }
     }
 }
