@@ -1,5 +1,8 @@
 package com.btpn.parkinglot;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -12,7 +15,7 @@ class ParkingLotTest {
     @Test
     void park_shouldNotThrowException_whenSuccessfullyParkACar() {
         Vehicle car = new Vehicle() {};
-        ParkingLot parkingLot = new ParkingLot(owner, capacity);
+        ParkingLot parkingLot = new ParkingLot(capacity);
 
         Assertions.assertDoesNotThrow(() -> parkingLot.park(car));
     }
@@ -20,7 +23,7 @@ class ParkingLotTest {
     @Test
     void park_shouldThrowVehicleAlreadyParkedException_whenCarIsAlreadyParked() {
         Vehicle car = new Vehicle() {};
-        ParkingLot parkingLot = new ParkingLot(owner, 2);
+        ParkingLot parkingLot = new ParkingLot(2);
         parkingLot.park(car);
 
         Assertions.assertThrows(VehicleAlreadyParkedException.class, () -> parkingLot.park(car));
@@ -29,7 +32,7 @@ class ParkingLotTest {
     @Test
     void unpark_shouldNotThrowException_whenSuccessfullyUnparkACar() {
         Vehicle car = new Vehicle() {};
-        ParkingLot parkingLot = new ParkingLot(owner, capacity);
+        ParkingLot parkingLot = new ParkingLot(capacity);
         parkingLot.park(car);
 
         Assertions.assertDoesNotThrow(() -> parkingLot.unpark(car));
@@ -38,7 +41,7 @@ class ParkingLotTest {
     @Test
     void unpark_shouldThrowVehicleIsNotParkedException_whenCarIsNotParked() {
         Vehicle car = new Vehicle() {};
-        ParkingLot parkingLot = new ParkingLot(owner, capacity);
+        ParkingLot parkingLot = new ParkingLot(capacity);
 
         Assertions.assertThrows(VehicleIsNotParkedException.class, () -> parkingLot.unpark(car));
     }
@@ -46,7 +49,9 @@ class ParkingLotTest {
     @Test
     void park_shouldCallNotifyIfFullFromOwner_whenParkingLotIsFull() {
         Vehicle car = new Vehicle() {};
-        ParkingLot parkingLot = new ParkingLot(owner, capacity);
+        List<Notifiable> notifiables = new ArrayList<>();
+        notifiables.add(owner);
+        ParkingLot parkingLot = new ParkingLot(notifiables, capacity);
 
         parkingLot.park(car);
 
@@ -57,7 +62,9 @@ class ParkingLotTest {
     void park_shouldThrowParkingLotIsFullException_whenParkToAFullParkingLot() {
         Vehicle car = new Vehicle() {};
         Vehicle truck = new Vehicle() {};
-        ParkingLot parkingLot = new ParkingLot(owner, capacity);
+        List<Notifiable> notifiables = new ArrayList<>();
+        notifiables.add(owner);
+        ParkingLot parkingLot = new ParkingLot(notifiables, capacity);
         parkingLot.park(car);
 
         Assertions.assertThrows(ParkingLotIsFullException.class, () -> parkingLot.park(truck));
@@ -66,7 +73,9 @@ class ParkingLotTest {
     @Test
     void unpark_shouldCallNotifyIfAvailableFromOwner_whenParkingLotBecomeAvailable() {
         Vehicle car = new Vehicle() {};
-        ParkingLot parkingLot = new ParkingLot(owner, capacity);
+        List<Notifiable> notifiables = new ArrayList<>();
+        notifiables.add(owner);
+        ParkingLot parkingLot = new ParkingLot(notifiables, capacity);
         parkingLot.park(car);
 
         parkingLot.unpark(car);
@@ -77,10 +86,27 @@ class ParkingLotTest {
     @Test
     void park_shouldCallNotifyIfFullFromTrafficCop_whenParkingLotIsFull() {
         Vehicle car = new Vehicle() {};
-        ParkingLot parkingLot = new ParkingLot(owner, trafficCop, capacity);
+        List<Notifiable> notifiables = new ArrayList<>();
+        notifiables.add(owner);
+        notifiables.add(trafficCop);
+        ParkingLot parkingLot = new ParkingLot(notifiables, capacity);
 
         parkingLot.park(car);
 
         Mockito.verify(trafficCop, Mockito.times(1)).notifyIfFull();
+    }
+
+    @Test
+    void unpark_shouldCallNotifyIfAvailableFromTrafficCop_whenParkingLotBecomeAvailable() {
+        Vehicle car = new Vehicle() {};
+        List<Notifiable> notifiables = new ArrayList<>();
+        notifiables.add(owner);
+        notifiables.add(trafficCop      );
+        ParkingLot parkingLot = new ParkingLot(notifiables, capacity);
+        parkingLot.park(car);
+
+        parkingLot.unpark(car);
+
+        Mockito.verify(owner, Mockito.times(1)).notifyIfAvailable();
     }
 }

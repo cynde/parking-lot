@@ -5,33 +5,17 @@ import java.util.List;
 
 public class ParkingLot {
     private List<Vehicle> cars = new ArrayList<>();
-    private Notifiable owner;
-    private Notifiable trafficCop;
+    private List<Notifiable> notifiables;
     private int capacity;
 
-    public ParkingLot(Notifiable owner, int capacity) {
-        this.owner = owner;
+    public ParkingLot(int capacity) {
         this.capacity = capacity;
-        this.trafficCop = new Notifiable(){
-
-            @Override
-            public void notifyIfFull() {
-                // TODO Auto-generated method stub
-                
-            }
-
-            @Override
-            public void notifyIfAvailable() {
-                // TODO Auto-generated method stub
-                
-            }
-            
-        };
+        this.notifiables = new ArrayList<>();
     }
 
-    public ParkingLot(Notifiable owner, Notifiable trafficCop, int capacity) {
-        this(owner, capacity);
-        this.trafficCop = trafficCop;
+    public ParkingLot(List<Notifiable> notifiables, int capacity) {
+        this.notifiables = notifiables;
+        this.capacity = capacity;
     }
 
     private boolean isParked(Vehicle car) {
@@ -51,8 +35,9 @@ public class ParkingLot {
         }
         this.cars.add(car);
         if (isFull()) {
-            this.owner.notifyIfFull();
-            this.trafficCop.notifyIfFull();
+            for (Notifiable notifiablePerson : this.notifiables) {
+                notifiablePerson.notifyIfFull();
+            }
         }
     }
 
@@ -63,7 +48,9 @@ public class ParkingLot {
         boolean ifFull = this.isFull();
         this.cars.remove(car);
         if (ifFull) {
-            this.owner.notifyIfAvailable();
+            for (Notifiable notifiablePerson : this.notifiables) {
+                notifiablePerson.notifyIfAvailable();
+            }
         }
     }
 }
