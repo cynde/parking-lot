@@ -1,17 +1,20 @@
 package com.btpn.parkinglot;
 
-public class Attendant {
-    private ParkingLot parkingLot;
+import java.util.ArrayList;
+import java.util.List;
 
-    public Attendant(ParkingLot parkingLot) {
-        this.parkingLot = parkingLot;
+public class Attendant {
+    private List<ParkingLot> parkingLots;
+
+    public Attendant(List<ParkingLot> parkingLots) {
+        this.parkingLots = new ArrayList<>(parkingLots);
     }
 
     public void park(Vehicle car) {
-        this.parkingLot.park(car);
+        this.parkingLots.get(0).park(car);
     }
 
     public void unpark(Vehicle car) {
-        this.parkingLot.unpark(car);
+        this.parkingLots.get(0).unpark(car);
     }
 }

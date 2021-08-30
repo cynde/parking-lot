@@ -1,15 +1,20 @@
 package com.btpn.parkinglot;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 class AttendantTest {
     private Vehicle car = new Vehicle() {};
+    private ParkingLot parkingLot = Mockito.mock(ParkingLot.class);
 
     @Test
     void park_shouldCallParkFromParkingLot_whenInvoked() {
-        ParkingLot parkingLot = Mockito.mock(ParkingLot.class);
-        Attendant attendant = new Attendant(parkingLot);
+        List<ParkingLot> parkingLots = new ArrayList<>();
+        parkingLots.add(parkingLot);
+        Attendant attendant = new Attendant(parkingLots);
 
         attendant.park(car);
 
@@ -18,8 +23,9 @@ class AttendantTest {
 
     @Test
     void unpark_shouldCallUnparkFromParkingLot_whenInvoked() {
-        ParkingLot parkingLot = Mockito.mock(ParkingLot.class);
-        Attendant attendant = new Attendant(parkingLot);
+        List<ParkingLot> parkingLots = new ArrayList<>();
+        parkingLots.add(parkingLot);
+        Attendant attendant = new Attendant(parkingLots);
 
         attendant.unpark(car);
 
