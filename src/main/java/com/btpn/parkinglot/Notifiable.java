@@ -1,6 +1,6 @@
 package com.btpn.parkinglot;
 
-public interface Owner {
+public interface Notifiable {
     public void notifyIfFull();
     public void notifyIfAvailable();
 }

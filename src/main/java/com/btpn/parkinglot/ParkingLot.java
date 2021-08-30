@@ -5,17 +5,31 @@ import java.util.List;
 
 public class ParkingLot {
     private List<Vehicle> cars = new ArrayList<>();
-    private Owner owner;
-    private TrafficCop trafficCop;
+    private Notifiable owner;
+    private Notifiable trafficCop;
     private int capacity;
 
-    public ParkingLot(Owner owner, int capacity) {
+    public ParkingLot(Notifiable owner, int capacity) {
         this.owner = owner;
         this.capacity = capacity;
-        this.trafficCop = () -> {};
+        this.trafficCop = new Notifiable(){
+
+            @Override
+            public void notifyIfFull() {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void notifyIfAvailable() {
+                // TODO Auto-generated method stub
+                
+            }
+            
+        };
     }
 
-    public ParkingLot(Owner owner, TrafficCop trafficCop, int capacity) {
+    public ParkingLot(Notifiable owner, Notifiable trafficCop, int capacity) {
         this(owner, capacity);
         this.trafficCop = trafficCop;
     }

@@ -6,8 +6,8 @@ import org.mockito.Mockito;
 
 class ParkingLotTest {
     private int capacity = 1;
-    private Owner owner = Mockito.mock(Owner.class);
-    private TrafficCop trafficCop = Mockito.mock(TrafficCop.class);
+    private Notifiable owner = Mockito.mock(Notifiable.class);
+    private Notifiable trafficCop = Mockito.mock(Notifiable.class);
 
     @Test
     void park_shouldNotThrowException_whenSuccessfullyParkACar() {
