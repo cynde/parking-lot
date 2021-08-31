@@ -3,21 +3,23 @@ package com.btpn.parkinglot;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.btpn.parkinglot.parkingstrategy.FirstAvailableStrategy;
+
 public class Attendant implements Notifiable {
     private List<ParkingLot> parkingLots;
     private List<ParkingLot> availableParkingLots;
-    private ParkingStrategy parkingMode;
+    private ParkingStrategy parkingStrategy;
 
     public Attendant(List<ParkingLot> parkingLots) {
         this.parkingLots = new ArrayList<>(parkingLots);
         this.availableParkingLots = new ArrayList<>(parkingLots);
-        this.parkingMode = ParkingMode.FIRST_AVAILABLE;
+        this.parkingStrategy = new FirstAvailableStrategy();
         subscribeLots();
     }
 
-    public Attendant(List<ParkingLot> parkingLots, ParkingStrategy parkingMode) {
+    public Attendant(List<ParkingLot> parkingLots, ParkingStrategy parkingStrategy) {
         this(parkingLots);
-        this.parkingMode = parkingMode;
+        this.parkingStrategy = parkingStrategy;
     }
 
     private void subscribeLots() {
@@ -30,7 +32,7 @@ public class Attendant implements Notifiable {
         if (availableParkingLots.isEmpty()) {
             throw new NoAvailableParkingLotException();
         }
-        ParkingLot selectedParkingLot = this.parkingMode.selectParkingLot(this.availableParkingLots.stream());
+        ParkingLot selectedParkingLot = this.parkingStrategy.selectParkingLot(this.availableParkingLots.stream());
         selectedParkingLot.park(car);
     }
 

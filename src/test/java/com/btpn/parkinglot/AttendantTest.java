@@ -3,6 +3,9 @@ package com.btpn.parkinglot;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.btpn.parkinglot.parkingstrategy.MostCapacityStrategy;
+import com.btpn.parkinglot.parkingstrategy.MostFreeSpaceStrategy;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -84,7 +87,7 @@ class AttendantTest {
         ParkingLot otherParkingLot = new ParkingLot(new ArrayList<>(), 3);
         parkingLots.add(parkingLot);
         parkingLots.add(otherParkingLot);
-        Attendant attendant = new Attendant(parkingLots, ParkingMode.MOST_CAPACITY);
+        Attendant attendant = new Attendant(parkingLots, new MostCapacityStrategy());
         
         attendant.park(car);
 
@@ -98,7 +101,7 @@ class AttendantTest {
         ParkingLot otherParkingLot = new ParkingLot(new ArrayList<>(), 2);
         parkingLots.add(parkingLot);
         parkingLots.add(otherParkingLot);
-        Attendant attendant = new Attendant(parkingLots, ParkingMode.MOST_FREE_SPACE);
+        Attendant attendant = new Attendant(parkingLots, new MostFreeSpaceStrategy());
         attendant.park(car);
         
         attendant.park(otherCar);
