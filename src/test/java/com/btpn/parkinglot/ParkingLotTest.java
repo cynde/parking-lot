@@ -124,4 +124,21 @@ class ParkingLotTest {
 
         Assertions.assertThrows(AlreadySubscribedException.class, () -> parkingLot.addSubscriber(owner));
     }
+
+    @Test
+    void isParked_shouldReturnTrue_whenCarIsParkedInTheParkingLot() {
+        Vehicle car = new Vehicle() {};
+        ParkingLot parkingLot = new ParkingLot(capacity);
+        parkingLot.park(car);
+
+        Assertions.assertTrue(parkingLot.isParked(car));
+    }
+
+    @Test
+    void isParked_shouldReturnFalse_whenCarIsNotParkedInTheParkingLot() {
+        Vehicle car = new Vehicle() {};
+        ParkingLot parkingLot = new ParkingLot(capacity);
+
+        Assertions.assertFalse(parkingLot.isParked(car));
+    }
 }

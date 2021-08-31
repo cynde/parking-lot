@@ -25,7 +25,7 @@ public class ParkingLot {
         this.notifiables.add(notifiable);
     }
 
-    private boolean isParked(Vehicle car) {
+    public boolean isParked(Vehicle car) {
         return this.cars.contains(car);
     }
 

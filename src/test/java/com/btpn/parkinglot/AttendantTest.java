@@ -29,6 +29,8 @@ class AttendantTest {
         List<ParkingLot> parkingLots = new ArrayList<>();
         parkingLots.add(parkingLot);
         Attendant attendant = new Attendant(parkingLots);
+        attendant.park(car);
+        Mockito.doReturn(true).when(parkingLot).isParked(car);
 
         attendant.unpark(car);
 
@@ -66,6 +68,9 @@ class AttendantTest {
         parkingLots.add(parkingLot);
         parkingLots.add(otherParkingLot);
         Attendant attendant = new Attendant(parkingLots);
+        attendant.park(otherCar);
+        attendant.park(car);
+        Mockito.doReturn(true).when(otherParkingLot).isParked(car);
         Mockito.doThrow(VehicleIsNotParkedException.class).when(parkingLot).unpark(car);
 
         attendant.unpark(car);
