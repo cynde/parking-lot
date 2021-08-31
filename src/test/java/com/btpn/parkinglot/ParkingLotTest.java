@@ -55,7 +55,7 @@ class ParkingLotTest {
 
         parkingLot.park(car);
 
-        Mockito.verify(owner, Mockito.times(1)).notifyIfFull();
+        Mockito.verify(owner, Mockito.times(1)).notifyIfFull(parkingLot);
     }
     
     @Test
@@ -80,7 +80,7 @@ class ParkingLotTest {
 
         parkingLot.unpark(car);
 
-        Mockito.verify(owner, Mockito.times(1)).notifyIfAvailable();
+        Mockito.verify(owner, Mockito.times(1)).notifyIfAvailable(parkingLot);
     }
 
     @Test
@@ -93,7 +93,7 @@ class ParkingLotTest {
 
         parkingLot.park(car);
 
-        Mockito.verify(trafficCop, Mockito.times(1)).notifyIfFull();
+        Mockito.verify(trafficCop, Mockito.times(1)).notifyIfFull(parkingLot);
     }
 
     @Test
@@ -107,7 +107,7 @@ class ParkingLotTest {
 
         parkingLot.unpark(car);
 
-        Mockito.verify(owner, Mockito.times(1)).notifyIfAvailable();
+        Mockito.verify(owner, Mockito.times(1)).notifyIfAvailable(parkingLot);
     }
 
     @Test

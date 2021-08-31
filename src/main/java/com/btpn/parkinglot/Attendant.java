@@ -2,24 +2,28 @@ package com.btpn.parkinglot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
-public class Attendant {
+public class Attendant implements Notifiable {
     private List<ParkingLot> parkingLots;
-    private Stream<ParkingLot> map;
+    private List<ParkingLot> availableParkingLots;
 
     public Attendant(List<ParkingLot> parkingLots) {
         this.parkingLots = new ArrayList<>(parkingLots);
+        this.availableParkingLots = new ArrayList<>(parkingLots);
+        subscribeLots();
+    }
+
+    private void subscribeLots() {
+        for (ParkingLot parkingLot : this.parkingLots) {
+            parkingLot.addSubscriber(this);
+        }
     }
 
     public void park(Vehicle car) {
-        for (ParkingLot parkingLot : this.parkingLots) {
-            try {
-                parkingLot.park(car);
-                return;
-            } catch (ParkingLotIsFullException exception) {}
+        if (availableParkingLots.isEmpty()) {
+            throw new NoAvailableParkingLotException();
         }
-        throw new NoAvailableParkingLotException();
+        this.availableParkingLots.get(0).park(car);
     }
 
     public void unpark(Vehicle car) {
@@ -28,5 +32,16 @@ public class Attendant {
             throw new VehicleIsNotParkedException();
         }
         parkingLot.unpark(car);
+    }
+
+    @Override
+    public void notifyIfFull(ParkingLot parkingLot) {
+        this.availableParkingLots.remove(parkingLot);
+        
+    }
+
+    @Override
+    public void notifyIfAvailable(ParkingLot parkingLot) {
+        this.availableParkingLots.add(parkingLot);
     }
 }

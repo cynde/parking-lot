@@ -40,23 +40,22 @@ class AttendantTest {
     @Test
     void park_shouldParkInAnotherParkingLot_whenFirstParkingLotIsFull() {
         List<ParkingLot> parkingLots = new ArrayList<>();
+        ParkingLot parkingLot = new ParkingLot(new ArrayList<>(), 1);
+        ParkingLot otherParkingLot = new ParkingLot(new ArrayList<>(), 1);
         parkingLots.add(parkingLot);
         parkingLots.add(otherParkingLot);
         Attendant attendant = new Attendant(parkingLots);
-        Mockito.doThrow(ParkingLotIsFullException.class).when(parkingLot).park(otherCar);
         attendant.park(car);
-        
-        attendant.park(otherCar);
 
-        Mockito.verify(otherParkingLot, Mockito.times(1)).park(otherCar);
+        Assertions.assertDoesNotThrow(() -> otherParkingLot.park(otherCar));
     }
 
     @Test
     void park_shouldThrowNoAvailableParkingLot_whenAllParkingLotIsFull() {
         List<ParkingLot> parkingLots = new ArrayList<>();
+        ParkingLot parkingLot = new ParkingLot(new ArrayList<>(), 1);
         parkingLots.add(parkingLot);
         Attendant attendant = new Attendant(parkingLots);
-        Mockito.doThrow(ParkingLotIsFullException.class).when(parkingLot).park(otherCar);
         attendant.park(car);
         
         Assertions.assertThrows(NoAvailableParkingLotException.class, () -> attendant.park(otherCar));

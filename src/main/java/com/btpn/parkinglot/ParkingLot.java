@@ -43,7 +43,7 @@ public class ParkingLot {
         this.cars.add(car);
         if (isFull()) {
             for (Notifiable notifiablePerson : this.notifiables) {
-                notifiablePerson.notifyIfFull();
+                notifiablePerson.notifyIfFull(this);
             }
         }
     }
@@ -56,7 +56,7 @@ public class ParkingLot {
         this.cars.remove(car);
         if (ifFull) {
             for (Notifiable notifiablePerson : this.notifiables) {
-                notifiablePerson.notifyIfAvailable();
+                notifiablePerson.notifyIfAvailable(this);
             }
         }
     }

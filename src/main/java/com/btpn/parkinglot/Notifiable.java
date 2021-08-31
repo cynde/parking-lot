@@ -1,6 +1,6 @@
 package com.btpn.parkinglot;
 
 public interface Notifiable {
-    public void notifyIfFull();
-    public void notifyIfAvailable();
+    public void notifyIfFull(ParkingLot parkingLot);
+    public void notifyIfAvailable(ParkingLot parkingLot);
 }
