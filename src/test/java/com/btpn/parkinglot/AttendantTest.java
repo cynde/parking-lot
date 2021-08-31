@@ -59,4 +59,17 @@ class AttendantTest {
         
         Assertions.assertThrows(NoAvailableParkingLotException.class, () -> attendant.park(otherCar));
     }
+
+    @Test
+    void unpark_shouldCallUnparkFromOtherParkingLot_whenCarIsNotParkedInTheFirstParkingLot() {
+        List<ParkingLot> parkingLots = new ArrayList<>();
+        parkingLots.add(parkingLot);
+        parkingLots.add(otherParkingLot);
+        Attendant attendant = new Attendant(parkingLots);
+        Mockito.doThrow(VehicleIsNotParkedException.class).when(parkingLot).unpark(car);
+
+        attendant.unpark(car);
+
+        Mockito.verify(otherParkingLot, Mockito.times(1)).unpark(car);
+    }
 }

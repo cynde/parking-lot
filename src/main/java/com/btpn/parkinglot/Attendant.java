@@ -21,6 +21,11 @@ public class Attendant {
     }
 
     public void unpark(Vehicle car) {
-        this.parkingLots.get(0).unpark(car);
+        for (ParkingLot parkingLot : parkingLots) {
+            try {
+                parkingLot.unpark(car);
+                return;
+            } catch (VehicleIsNotParkedException exception) {}
+        }
     }
 }
