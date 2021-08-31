@@ -149,4 +149,12 @@ class ParkingLotTest {
 
         Assertions.assertEquals(1, otherParkingLot.compareByCapacityDescending(parkingLot));
     }
+
+    @Test
+    void compareByFreeSpaceDescending_shouldReturnTwo_whenParkingLotHas3FreeSpaceAndOtherParkingLotHas1FreeSpace() {
+        ParkingLot parkingLot = new ParkingLot(3);
+        ParkingLot otherParkingLot = new ParkingLot(1);
+
+        Assertions.assertEquals(2, otherParkingLot.compareByFreeSpaceDescending(parkingLot));
+    }
 }

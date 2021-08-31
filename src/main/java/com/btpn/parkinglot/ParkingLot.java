@@ -64,4 +64,8 @@ public class ParkingLot {
     public int compareByCapacityDescending(ParkingLot otherParkingLot) {
         return otherParkingLot.capacity - this.capacity;
     }
+
+    public int compareByFreeSpaceDescending(ParkingLot otherParkingLot) {
+        return (otherParkingLot.capacity - otherParkingLot.cars.size()) - (this.capacity - this.cars.size());
+    }
 }

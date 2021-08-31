@@ -90,4 +90,19 @@ class AttendantTest {
 
         Assertions.assertTrue(otherParkingLot.isParked(car));
     }
+
+    @Test
+    void park_shouldParkToOtherParkingLot_whenOtherParkingLotHasFreeSpaceAndParkingModeIsMostFreeSpace() {
+        List<ParkingLot> parkingLots = new ArrayList<>();
+        ParkingLot parkingLot = new ParkingLot(new ArrayList<>(), 2);
+        ParkingLot otherParkingLot = new ParkingLot(new ArrayList<>(), 2);
+        parkingLots.add(parkingLot);
+        parkingLots.add(otherParkingLot);
+        Attendant attendant = new Attendant(parkingLots, ParkingMode.MOST_FREE_SPACE);
+        attendant.park(car);
+        
+        attendant.park(otherCar);
+
+        Assertions.assertTrue(otherParkingLot.isParked(otherCar));
+    }
 }

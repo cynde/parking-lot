@@ -42,6 +42,15 @@ public class Attendant implements Notifiable {
                 selectedParkingLot.park(car);
             }
         }
+        if (this.parkingMode == ParkingMode.MOST_FREE_SPACE) {
+            ParkingLot selectedParkingLot = this.availableParkingLots.stream()
+                .sorted((parkingLot, otherParkingLot) -> parkingLot.compareByFreeSpaceDescending(otherParkingLot))
+                .findFirst()
+                .orElse(null);
+            if (selectedParkingLot != null) {
+                selectedParkingLot.park(car);
+            }
+        }
     }
 
     public void unpark(Vehicle car) {
