@@ -76,4 +76,18 @@ class AttendantTest {
 
         Mockito.verify(otherParkingLot, Mockito.times(1)).unpark(car);
     }
+
+    @Test
+    void park_shouldParkToOtherParkingLot_whenOtherParkingLotHasMostCapacityAndParkingModeIsMostCapacity() {
+        List<ParkingLot> parkingLots = new ArrayList<>();
+        ParkingLot parkingLot = new ParkingLot(new ArrayList<>(), 2);
+        ParkingLot otherParkingLot = new ParkingLot(new ArrayList<>(), 3);
+        parkingLots.add(parkingLot);
+        parkingLots.add(otherParkingLot);
+        Attendant attendant = new Attendant(parkingLots, ParkingMode.MOST_CAPACITY);
+        
+        attendant.park(car);
+
+        Assertions.assertTrue(otherParkingLot.isParked(car));
+    }
 }

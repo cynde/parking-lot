@@ -60,4 +60,8 @@ public class ParkingLot {
             }
         }
     }
+
+    public int compareByCapacityDescending(ParkingLot otherParkingLot) {
+        return otherParkingLot.capacity - this.capacity;
+    }
 }

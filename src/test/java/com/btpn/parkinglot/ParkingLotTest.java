@@ -141,4 +141,12 @@ class ParkingLotTest {
 
         Assertions.assertFalse(parkingLot.isParked(car));
     }
+
+    @Test
+    void compareByCapacityDescending_shouldReturnOne_whenParkingLotHas3CapacityAndOtherParkingLotHas2Capacity() {
+        ParkingLot parkingLot = new ParkingLot(3);
+        ParkingLot otherParkingLot = new ParkingLot(2);
+
+        Assertions.assertEquals(1, otherParkingLot.compareByCapacityDescending(parkingLot));
+    }
 }

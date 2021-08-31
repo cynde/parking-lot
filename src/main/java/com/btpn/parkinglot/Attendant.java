@@ -6,11 +6,18 @@ import java.util.List;
 public class Attendant implements Notifiable {
     private List<ParkingLot> parkingLots;
     private List<ParkingLot> availableParkingLots;
+    private ParkingMode parkingMode;
 
     public Attendant(List<ParkingLot> parkingLots) {
         this.parkingLots = new ArrayList<>(parkingLots);
         this.availableParkingLots = new ArrayList<>(parkingLots);
+        this.parkingMode = ParkingMode.FIRST_AVAILABLE;
         subscribeLots();
+    }
+
+    public Attendant(List<ParkingLot> parkingLots, ParkingMode parkingMode) {
+        this(parkingLots);
+        this.parkingMode = parkingMode;
     }
 
     private void subscribeLots() {
@@ -23,7 +30,18 @@ public class Attendant implements Notifiable {
         if (availableParkingLots.isEmpty()) {
             throw new NoAvailableParkingLotException();
         }
-        this.availableParkingLots.get(0).park(car);
+        if (this.parkingMode == ParkingMode.FIRST_AVAILABLE) {
+            this.availableParkingLots.get(0).park(car);
+        }
+        if (this.parkingMode == ParkingMode.MOST_CAPACITY) {
+            ParkingLot selectedParkingLot = this.availableParkingLots.stream()
+                .sorted((parkingLot, otherParkingLot) -> parkingLot.compareByCapacityDescending(otherParkingLot))
+                .findFirst()
+                .orElse(null);
+            if (selectedParkingLot != null) {
+                selectedParkingLot.park(car);
+            }
+        }
     }
 
     public void unpark(Vehicle car) {
