@@ -8,7 +8,9 @@ import org.mockito.Mockito;
 
 class AttendantTest {
     private Vehicle car = new Vehicle() {};
+    private Vehicle otherCar = new Vehicle() {};
     private ParkingLot parkingLot = Mockito.mock(ParkingLot.class);
+    private ParkingLot otherParkingLot = Mockito.mock(ParkingLot.class);
 
     @Test
     void park_shouldCallParkFromParkingLot_whenInvoked() {
@@ -30,5 +32,19 @@ class AttendantTest {
         attendant.unpark(car);
 
         Mockito.verify(parkingLot, Mockito.times(1)).unpark(car);
+    }
+
+    @Test
+    void park_shouldParkInAnotherParkingLot_whenFirstParkingLotIsFull() {
+        List<ParkingLot> parkingLots = new ArrayList<>();
+        parkingLots.add(parkingLot);
+        parkingLots.add(otherParkingLot);
+        Attendant attendant = new Attendant(parkingLots);
+        Mockito.doThrow(ParkingLotIsFullException.class).when(parkingLot).park(otherCar);
+        attendant.park(car);
+        
+        attendant.park(otherCar);
+
+        Mockito.verify(otherParkingLot, Mockito.times(1)).park(otherCar);
     }
 }

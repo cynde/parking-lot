@@ -11,7 +11,12 @@ public class Attendant {
     }
 
     public void park(Vehicle car) {
-        this.parkingLots.get(0).park(car);
+        for(ParkingLot parkingLot : parkingLots) {
+            try {
+                parkingLot.park(car);
+                return;
+            } catch (ParkingLotIsFullException exception) {}
+        }
     }
 
     public void unpark(Vehicle car) {
