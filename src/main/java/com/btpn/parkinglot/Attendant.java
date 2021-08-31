@@ -6,7 +6,7 @@ import java.util.List;
 public class Attendant implements Notifiable {
     private List<ParkingLot> parkingLots;
     private List<ParkingLot> availableParkingLots;
-    private ParkingMode parkingMode;
+    private ParkingStrategy parkingMode;
 
     public Attendant(List<ParkingLot> parkingLots) {
         this.parkingLots = new ArrayList<>(parkingLots);
@@ -15,7 +15,7 @@ public class Attendant implements Notifiable {
         subscribeLots();
     }
 
-    public Attendant(List<ParkingLot> parkingLots, ParkingMode parkingMode) {
+    public Attendant(List<ParkingLot> parkingLots, ParkingStrategy parkingMode) {
         this(parkingLots);
         this.parkingMode = parkingMode;
     }
@@ -30,27 +30,8 @@ public class Attendant implements Notifiable {
         if (availableParkingLots.isEmpty()) {
             throw new NoAvailableParkingLotException();
         }
-        if (this.parkingMode == ParkingMode.FIRST_AVAILABLE) {
-            this.availableParkingLots.get(0).park(car);
-        }
-        if (this.parkingMode == ParkingMode.MOST_CAPACITY) {
-            ParkingLot selectedParkingLot = this.availableParkingLots.stream()
-                .sorted((parkingLot, otherParkingLot) -> parkingLot.compareByCapacityDescending(otherParkingLot))
-                .findFirst()
-                .orElse(null);
-            if (selectedParkingLot != null) {
-                selectedParkingLot.park(car);
-            }
-        }
-        if (this.parkingMode == ParkingMode.MOST_FREE_SPACE) {
-            ParkingLot selectedParkingLot = this.availableParkingLots.stream()
-                .sorted((parkingLot, otherParkingLot) -> parkingLot.compareByFreeSpaceDescending(otherParkingLot))
-                .findFirst()
-                .orElse(null);
-            if (selectedParkingLot != null) {
-                selectedParkingLot.park(car);
-            }
-        }
+        ParkingLot selectedParkingLot = this.parkingMode.selectParkingLot(this.availableParkingLots.stream());
+        selectedParkingLot.park(car);
     }
 
     public void unpark(Vehicle car) {
