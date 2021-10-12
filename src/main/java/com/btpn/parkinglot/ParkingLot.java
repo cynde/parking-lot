@@ -23,6 +23,12 @@ public class ParkingLot {
             throw new AlreadySubscribedException();
         }
         this.notifiables.add(notifiable);
+
+        if (isFull()) {
+            notifiable.notifyIfFull(this);
+            return;
+        }
+        notifiable.notifyIfAvailable(this);
     }
 
     public boolean isParked(Vehicle car) {
@@ -66,6 +72,6 @@ public class ParkingLot {
     }
 
     public int compareByFreeSpaceDescending(ParkingLot otherParkingLot) {
-        return (otherParkingLot.capacity - otherParkingLot.cars.size()) - (this.capacity - this.cars.size());
+        return (otherParkingLot.capacity - otherParkingLot.cars.size()) - (this.capacity - this.cars.size()); // use integer by compare
     }
 }

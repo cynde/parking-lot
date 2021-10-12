@@ -12,7 +12,7 @@ public class Attendant implements Notifiable {
 
     public Attendant(List<ParkingLot> parkingLots) {
         this.parkingLots = new ArrayList<>(parkingLots);
-        this.availableParkingLots = new ArrayList<>(parkingLots);
+        this.availableParkingLots = new ArrayList<>(); // new arraylist aja
         this.parkingStrategy = new FirstAvailableStrategy();
         subscribeLots();
     }
