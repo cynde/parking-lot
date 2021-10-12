@@ -13,8 +13,8 @@ import org.mockito.Mockito;
 class AttendantTest {
     private Vehicle car = new Vehicle() {};
     private Vehicle otherCar = new Vehicle() {};
-    private ParkingLot parkingLot = Mockito.mock(ParkingLot.class);
-    private ParkingLot otherParkingLot = Mockito.mock(ParkingLot.class);
+    private ParkingLot parkingLot = Mockito.spy(new ParkingLot(1));
+    private ParkingLot otherParkingLot = Mockito.spy(new ParkingLot(1));
 
     @Test
     void park_shouldCallParkFromParkingLot_whenInvoked() {
